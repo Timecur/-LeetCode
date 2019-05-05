@@ -1,0 +1,40 @@
+class Solution {
+public:
+  
+    int SlidWindow(string&s, int k, int left, int right)
+    {
+        if(left > right)
+            return 0;
+        
+        unordered_map<char, int>mm;
+        for(auto& e : s){
+            if(mm.count(e) < 0)
+                mm[e] == 1;
+            else
+                mm[e]++;
+        }
+        
+        while(left <= right && mm[s[left]] < k){
+            mm[s[left]]--;
+            left++;
+        }
+        while(left <= right && mm[s[right]] < k){
+            mm[s[right]]--;
+            right--;
+        }
+        
+        
+        for(int i = left+1; i < right; i++){
+            if(mm[s[i]] < k){
+                return max(SlidWindow(s, k, left, i-1), SlidWindow(s, k, i+1, right));
+            }
+        }
+        
+        return right-left+1;
+    }
+    
+    int longestSubstring(string s, int k) {
+        
+        return SlidWindow(s, k, 0, s.size()-1);
+    }
+};
