@@ -1,0 +1,40 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    
+    int Result(TreeNode* root)
+    {
+        if (nullptr == root){
+            return 0;
+        }
+
+        int val = root->val; // 记录当前节点值
+        int left_val = Result(root->left); // 左子树最大值
+        int right_val = Result(root->right); // 右子树最大值
+
+        // 比较已记录最大值与当前节点左子树，右子树，左右连接的最大值，并更新结果
+        result = max(max(result, left_val + val), max(right_val + \
+            val, left_val + right_val + val));
+
+        result = max(val, result);
+        
+        // 返回当前节点下的最大值，不包括左右连通情况
+        return max(val, max(left_val + root->val, right_val + val));
+    }
+
+    int maxPathSum(TreeNode* root) {
+        Result(root);
+        return result;
+    }
+    
+private:
+        int result = INT_MIN;
+};
