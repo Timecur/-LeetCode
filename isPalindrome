@@ -1,0 +1,34 @@
+https://leetcode-cn.com/explore/interview/card/top-interview-quesitons-in-2018/275/string/1136/
+
+class Solution {
+public:
+    bool isPalindrome(string s) {
+        if(s.size() <= 1)
+            return true;
+        
+        int left =  0;
+        int right = s.size();
+        
+        while(left < right){
+            if(isalpha(s[left]) > 0 || isdigit(s[left]) > 0){
+                if(isalpha(s[right]) > 0 || isdigit(s[right]) > 0){
+                    if(tolower(s[left]) == tolower(s[right])){
+                        left++;
+                        right--;
+                    }
+                    else
+                        return false;
+                }
+                else{
+                    right--;
+                    continue;
+                }
+            }  
+            else{
+                left++;
+                continue;
+            }
+        }
+        return true;
+    }
+};
