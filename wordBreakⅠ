@@ -1,0 +1,46 @@
+https://leetcode-cn.com/problems/word-break/
+
+class Solution {
+public:
+    bool matchWord(int start, string s, vector<int>& find, vector<string> wordDict){
+        // find记录已经匹配成功的路径
+        // start等于字符长度表示正字符串都匹配到，即匹配成功
+        if(find[start] > 0 || start == s.size())
+            return true;
+        if(find[start] == 0)
+            return false;
+
+        bool flag;
+        int i = 0, j = 0;
+        for(i = 0; i < wordDict.size(); i++){
+            flag = true;
+            for(j = 0; j < wordDict[i].size(); j++){
+                if(start+j == s.size() || s[start+j] != wordDict[i][j]){
+                    flag = false;
+                    break;
+                }
+            }
+            // 当前有匹配单词
+            if(flag){
+                // 继续向后进行匹配
+                if(matchWord(start+j, s, find, wordDict)){
+                    // 完全匹配
+                    find[start] = 1;
+                    return true;
+                }
+                // 匹配失败表示此路径不通，并记录
+                else{
+                    find[start] = 0;
+                }    
+            }
+        }
+
+        return false;
+    }
+
+    bool wordBreak(string s, vector<string>& wordDict) {
+        
+        vector<int>find(s.size()+5, -1);
+        return matchWord(0, s, find, wordDict);
+    }
+};
