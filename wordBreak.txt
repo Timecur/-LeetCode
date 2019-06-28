@@ -1,0 +1,87 @@
+/*
+class Solution {
+public:
+       vector<string> vres;
+
+    int MatchWord(string str, int start, string dict){
+        for (int i = 0; i < dict.size(); i++){
+            if (start < str.size()){
+                if (str[start++] == dict[i])
+                    continue;
+                else
+                    return -1;
+            }
+            else{
+                return -1;
+            }
+        }
+        return start;
+    }
+
+    void DFS(int spos, string s, vector<int>& find, string& vstr, vector<string> wordDict){
+        // 字符串全部拆分，结果加到返回数组中
+        if (spos == s.size()) { vres.push_back(vstr); return; }
+        // 当前位置没有存在的单词
+        if (find[spos] == 0) return;
+
+        bool flag = false;
+        for (int j = 0; j < wordDict.size(); j++){
+            // 从字符串中匹配单词
+            int end = MatchWord(s, spos, wordDict[j]);
+            // 匹配成功在find中记录
+            if (end > 0){
+                flag = true;
+                find[spos] = 1; // j 表示与那一单词可以匹配
+                // 添加空格
+                string ret;
+                // 第一个分词不加空格
+                if (spos > 0){
+                    ret += ' ';
+                }
+                ret += wordDict[j];
+                vstr.append(ret);
+                // 继续向下进行匹配
+                DFS(spos+wordDict[j].size(), s, find, vstr, wordDict);
+                // 去除空格
+                vstr.erase(spos, ret.size());
+            }
+
+        }
+        if(!flag){
+            // 记录此路径不通
+            find[spos] = 0;
+        }
+
+    }
+
+    vector<string> wordBreak(string s, vector<string>& wordDict) {
+        vector<int> find(s.size(), -1);
+        string vstr;
+        DFS(0, s, find, vstr, wordDict);
+        return vres;
+    }
+};
+*/
+class Solution {
+public:
+    vector<string> DFS(string s, vector<string> wordDict, unordered_map<string, vector<string> >& find){
+        if (s.empty()) return{ "" };
+        if (find.count(s) > 0){ return find[s]; }
+
+        for (auto word : wordDict){
+            if (s.substr(0, word.size()) == word){
+
+                vector<string> ret = DFS(s.substr(word.size()), wordDict, find);
+                for (auto res : ret){
+                    find[s].push_back(word + (res.empty() ? "" : " ") + res);
+                }
+            }
+        }
+        return find[s];
+    }
+
+    vector<string> wordBreak(string s, vector<string>& wordDict) {
+        unordered_map<string, vector<string> >find;
+        return DFS(s, wordDict, find);
+    }
+};
