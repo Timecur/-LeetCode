@@ -1,3 +1,6 @@
+https://leetcode-cn.com/explore/interview/card/top-interview-quesitons-in-2018/275/string/1139/
+
+
 /*
 class Solution {
 public:
@@ -19,36 +22,36 @@ public:
     }
 
     void DFS(int spos, string s, vector<int>& find, string& vstr, vector<string> wordDict){
-        // ×Ö·û´®È«²¿²ğ·Ö£¬½á¹û¼Óµ½·µ»ØÊı×éÖĞ
+        // å­—ç¬¦ä¸²å…¨éƒ¨æ‹†åˆ†ï¼Œç»“æœåŠ åˆ°è¿”å›æ•°ç»„ä¸­
         if (spos == s.size()) { vres.push_back(vstr); return; }
-        // µ±Ç°Î»ÖÃÃ»ÓĞ´æÔÚµÄµ¥´Ê
+        // å½“å‰ä½ç½®æ²¡æœ‰å­˜åœ¨çš„å•è¯
         if (find[spos] == 0) return;
 
         bool flag = false;
         for (int j = 0; j < wordDict.size(); j++){
-            // ´Ó×Ö·û´®ÖĞÆ¥Åäµ¥´Ê
+            // ä»å­—ç¬¦ä¸²ä¸­åŒ¹é…å•è¯
             int end = MatchWord(s, spos, wordDict[j]);
-            // Æ¥Åä³É¹¦ÔÚfindÖĞ¼ÇÂ¼
+            // åŒ¹é…æˆåŠŸåœ¨findä¸­è®°å½•
             if (end > 0){
                 flag = true;
-                find[spos] = 1; // j ±íÊ¾ÓëÄÇÒ»µ¥´Ê¿ÉÒÔÆ¥Åä
-                // Ìí¼Ó¿Õ¸ñ
+                find[spos] = 1; // j è¡¨ç¤ºä¸é‚£ä¸€å•è¯å¯ä»¥åŒ¹é…
+                // æ·»åŠ ç©ºæ ¼
                 string ret;
-                // µÚÒ»¸ö·Ö´Ê²»¼Ó¿Õ¸ñ
+                // ç¬¬ä¸€ä¸ªåˆ†è¯ä¸åŠ ç©ºæ ¼
                 if (spos > 0){
                     ret += ' ';
                 }
                 ret += wordDict[j];
                 vstr.append(ret);
-                // ¼ÌĞøÏòÏÂ½øĞĞÆ¥Åä
+                // ç»§ç»­å‘ä¸‹è¿›è¡ŒåŒ¹é…
                 DFS(spos+wordDict[j].size(), s, find, vstr, wordDict);
-                // È¥³ı¿Õ¸ñ
+                // å»é™¤ç©ºæ ¼
                 vstr.erase(spos, ret.size());
             }
 
         }
         if(!flag){
-            // ¼ÇÂ¼´ËÂ·¾¶²»Í¨
+            // è®°å½•æ­¤è·¯å¾„ä¸é€š
             find[spos] = 0;
         }
 
