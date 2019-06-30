@@ -1,0 +1,141 @@
+https://leetcode-cn.com/explore/interview/card/top-interview-quesitons-in-2018/275/string/1141/
+
+class Solution {
+public:
+    vector<string> res;
+    vector<vector<int>> dir = { { 0, 1 }, { 0, -1 }, { 1, 0 }, { -1, 0 } };
+    
+    struct TrieNode{
+        TrieNode* child[26];
+        string str;
+        TrieNode()
+            :str(""){
+                for(auto &c : child)
+                    c = nullptr;
+        }
+    };
+    
+    struct Trie{
+        TrieNode* root;
+        Trie()
+            :root(new TrieNode()){}
+        
+        void insert(string str){
+            TrieNode* p = root;
+            for(auto c:str){
+                int i = c - 'a';
+                if(!p->child[i])
+                    p->child[i] = new TrieNode();
+                p = p->child[i];
+            }
+            p->str = str;
+        }
+    };
+    
+    void matchWord(vector<vector<char> >& board,  TrieNode *p, int stx, int sty, vector<vector<bool> > &isFind){
+        if(!p->str.empty()){
+            res.push_back(p->str);
+            p->str.clear();
+        }
+        
+        isFind[stx][sty] = true;
+        for(auto d:dir){
+            int nx = stx + d[0];
+            int ny = sty + d[1];
+            if (nx >= 0 && nx < board.size() && ny >= 0 && ny < board[0].size() && !isFind[nx][ny] && p->child[board[nx][ny] - 'a']){
+                matchWord(board, p->child[board[nx][ny]-'a'], nx, ny, isFind);
+            }
+        }
+        isFind[stx][sty] = false;  
+    }
+    
+    vector<string> findWords(vector<vector<char>>& board, vector<string>& words) {
+        if(words.empty() || board.empty()) return res;
+        
+        vector<vector<bool> >isFind(board.size(), vector<bool>(board[0].size(), false));
+        
+        Trie tries;
+        
+        for(auto &word:words) tries.insert(word);
+        for(int i = 0; i < board.size(); i++){
+            for(int j = 0; j < board[i].size(); j++){
+                if(tries.root->child[board[i][j]-'a']){
+                    matchWord(board, tries.root->child[board[i][j] - 'a'], i, j, isFind);
+                }
+            }
+        }
+        return res;
+    }
+};
+
+//vector<string> res;
+//vector<vector<int>> dir = { { 0, 1 }, { 0, -1 }, { 1, 0 }, { -1, 0 } };
+//unordered_set<string> s;
+//
+//bool IsExist(string word, int start, int stx, int sty, vector<vector<char>>& board, vector<vector<int>>& isFind){
+//	if (start == word.size()) return true;
+//
+//	if (stx < 0 || stx >= board.size() || sty < 0 || sty >= board[0].size() || isFind[stx][sty] > 0){
+//		return false;
+//	}
+//
+//	if (word[start] == board[stx][sty]){
+//		isFind[stx][sty] = 1;
+//		for (int i = 0; i < 4; i++){
+//			int next_x = stx + dir[i][0];
+//			int next_y = sty + dir[i][1];
+//			if (IsExist(word, start + 1, next_x, next_y, board, isFind))
+//				return true;
+//			else
+//				continue;
+//		}
+//		isFind[stx][sty] = -1;
+//
+//	}
+//	s.insert(word.substr(0, start) + board[stx][sty]);
+//
+//	return false;
+//}
+//
+//
+//vector<string> findWords(vector<vector<char>>& board, vector<string>& words) {
+//	multimap<char, pair<int, int>> record;
+//	for (int i = 0; i < board.size(); i++){
+//		for (int j = 0; j < board[i].size(); j++){
+//			record.insert(make_pair(board[i][j], make_pair(i, j)));
+//		}
+//	}
+//
+//	for (auto word : words){
+//		if (record.count(word[0]) <= 0){
+//			continue;
+//		}
+//		else{
+//			// 三种 key对应多个value值时的遍历方式
+//			multimap<char, pair<int, int>>::iterator beg, end, m;
+//			beg = record.lower_bound(word[0]);
+//			end = record.upper_bound(word[0]);
+//			/*
+//			2:
+//			beg = record.equal_range(word[0]).first;
+//			end = record.equal_range(word[0]).second;
+//
+//			3:
+//			m = record.find(word[0]);
+//			for(int k = 0; k != record.count(word[0]); k++, record++){...}
+//			*/
+//			for (m = beg; m != end; m++){
+//				int i = m->second.first;
+//				int j = m->second.second;
+//				vector<vector<int> >isFind(board.size(), vector<int>(board[0].size(), -1));
+//
+//				if (s.count(word) > 0 || IsExist(word, 0, i, j, board, isFind)){
+//					res.push_back(word);
+//					break;
+//				}
+//			}
+//		}
+//	}
+//
+//	return res;
+//}
