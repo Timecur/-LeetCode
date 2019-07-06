@@ -1,0 +1,24 @@
+https://leetcode-cn.com/explore/interview/card/top-interview-quesitons-in-2018/264/array/1128/
+
+class Solution {
+public:
+    void rotate(vector<int>& nums, int k) {
+        if(nums.size() <= 1 || k == 0)
+            return;
+        
+        int count = 0; 
+        int i = 0;
+        while(count < nums.size()){
+            int next = (i+k)%nums.size();
+            int ret = nums[i];
+            while(i != next){
+                swap(ret, nums[next]);
+                count++;
+                next = (next+k)%nums.size();
+            }
+            swap(ret, nums[i]);
+            count++;
+            i++;
+        }
+    }
+};
