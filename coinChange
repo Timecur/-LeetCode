@@ -1,16 +1,47 @@
-class Solution {
-public:
-    int coinChange(vector<int>& coins, int amount) {
-        vector<int> dp(amount+1, amount+1);
-        dp[0] = 0;
-        
-        for(int i = 1; i <= amount; i++){
-            for(int j = 0; j < coins.size(); j++){
-               if(i-coins[j] >= 0){
-                   dp[i] = min(dp[i], dp[i-coins[j]] + 1);
-                }
-            }
-        }
-        return dp[amount] < amount+1 ? dp[amount] : -1;
-    }
-};
+1. 给定不同面额的硬币 coins 和一个总金额 amount。编写一个函数来计算可以凑成总金额所需的最少的硬币个数。如果没有任何一种硬币组合能组成总金额，返回 -1。
+   例 1:  coins = [1, 2, 5], amount = 12, result =3 (5 + 5 + 2 = 12)
+   例 2:  coins = [2], amount = 3, result = -1
+   说明:每种硬币的数量是无限的。
+
+=========================================================================================================================================
+
+#include <iostream>
+#include <vector>
+#include <algorithm>
+
+using namespace std;
+
+int main()
+{
+	vector<int> coins;
+	int amount, result;
+	int i;
+
+	while (cin.peek() != '\n'&&cin >> i){
+		coins.push_back(i);
+	}
+	cin >> amount;
+	vector<int> dp(amount + 1, amount + 1);
+	dp[0] = 0;
+
+	if (amount == 0){
+		cout << dp[1] << endl;
+	}
+	if (coins.empty()){
+		cout << -1 << endl;
+		return 0;
+	}
+
+	for (int i = 1; i <= amount; i++){
+		for (int j = 0; j < coins.size(); j++){
+			if (i - coins[j] >= 0){
+				dp[i] = min(dp[i], dp[i - coins[j]] + 1);
+			}
+		}
+	}
+	if (dp[amount] < amount + 1)
+		cout << dp[amount] << endl;
+	else
+		cout << -1 << endl;
+	return 0;
+}
