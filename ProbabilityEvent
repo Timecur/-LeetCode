@@ -1,0 +1,74 @@
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+//
+//vector<vector<int> > prob;
+//
+//void ProbabilityEvent(vector<int> red, vector<int>& cur, int n){
+//
+//for (int i = 0; i < n; i++){
+//if (red[i] == 0){
+//red[i] = 1;
+//cur.push_back(i);
+//ProbabilityEvent(red, cur, n);
+//red[i] = 0;
+//cur.pop_back();
+//}
+//}
+//if (cur.size() == n){
+//prob.push_back(cur);
+//}
+//}
+//
+//int main()
+//{
+//int n;
+//
+//while (cin >> n){
+//prob.clear();
+//vector<int> red(n, 0);
+//vector<int> cur;
+//
+//ProbabilityEvent(red, cur, n);
+//
+//int size = prob.size();
+//int count = 0;
+//for (int i = 0; i < size; i++){
+//int j = 0;
+//for (; j < n; j++){
+//if (prob[i][j] == j)
+//break;
+//}
+//if (j == n)
+//count++;
+//}
+//float res = ((float)count / (float)size)*100;
+//printf("%.2f", res);
+//cout << "%" << endl;
+//}
+//
+//return 0;
+//}
+
+// 排错算法
+
+int main()
+{
+	int n;
+	while (cin >> n){
+		vector<long long> cor(n + 1, 0);
+		cor[2] = 1;
+		for (int i = 3; i <= n; i++){
+			cor[i] = (i - 1)*(cor[i - 1] + cor[i - 2]);
+		}
+		long long sum = 1;
+		for (int i = 1; i <= n; i++){
+			sum *= i;
+		}
+		printf("%.2f%%\n", (float)cor[n] / (float)sum * 100);
+	}
+
+	return 0;
+}
