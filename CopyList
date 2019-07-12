@@ -1,0 +1,51 @@
+https://www.nowcoder.com/questionTerminal/286af664b17243deb745f69138f8a800
+
+// write your code here cpp
+#include <iostream>
+#include <string>
+#include <set>
+
+using namespace std;
+
+int main()
+{
+	string name;
+	string find_name;
+	set<string> s;
+	while (getline(cin, name)){
+
+		bool flag = true;
+		string ret = "";
+		for (int i = 0; i < name.size(); i++){
+			if (name[i] == ',' && flag){
+				s.insert(ret);
+				ret.clear();
+				continue;
+			}
+			if (name[i] == '\"'){
+				flag = !flag;
+				continue;
+			}
+
+			ret.push_back(name[i]);
+		}
+		if (!ret.empty())
+			s.insert(ret);
+
+		if (getline(cin, find_name)){
+			if (s.count(find_name) > 0)
+				cout << "Ignore" << endl;
+			else
+				cout << "Important!" << endl;
+		}
+		else
+			cout << "Ignore" << endl;
+	}
+	return 0;
+}
+/*
+Joe,Kewell,Leon
+Joe
+"Letendre, Bruce",Joe,"Quan, William"
+William
+*/
