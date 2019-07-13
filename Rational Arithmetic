@@ -1,0 +1,200 @@
+https://www.nowcoder.com/questionTerminal/b388bdee5e3e4b1c86a79ad1877a3aa4
+
+
+#include <iostream>
+#include <string>
+
+using namespace std;
+
+
+
+struct grade{
+	long long mon; // 分母
+	long long ele; // 分子
+	bool flag; // 正负
+};
+
+string add(grade g1, grade g2);
+string sub(grade g1, grade g2);
+string mul(grade g1, grade g2);
+string div(grade g1, grade g2);
+
+long long StringtoInt(string str){
+	if (str.empty() || str[0] == '0')
+		return 0;
+	bool flag = false;
+	if (str[0] == '-') flag = true;
+	int i = 0;
+	if (flag)
+		i = 1;
+	long long res = (str[i] - '0');
+	for (i += 1; i < str.size(); i++){
+		res = 10 * (res)+(str[i] - '0');
+	}
+	return flag ? (res - 2 * res) : res;
+}
+
+string InttoString(long long num){
+	if (num == 0)
+		return "0";
+	long long tmp = abs(num);
+
+	string str;
+	string res;
+	while (tmp != 0){
+		str.push_back((tmp % 10 + '0'));
+		tmp /= 10;
+	}
+	string::reverse_iterator rit;
+	for (rit = str.rbegin(); rit < str.rend(); rit++)
+		res.push_back(*rit);
+	return res;
+}
+
+string Simplify(grade g){
+	if (g.ele == 0)
+		return "0";
+
+	string res = "";
+	if (g.mon == 1){
+		return g.flag ? "(-" + InttoString(g.ele) + ")" : InttoString(g.ele);
+	}
+	res = (g.ele / g.mon) == 0 ? "" : InttoString(g.ele / g.mon) + " ";
+	res += InttoString(g.ele%g.mon) + "/" + InttoString(g.mon);
+	return g.flag ? "(-" + res + ")" : res;
+}
+
+long long gdc(long long n1, long long n2){
+	if (n2 == 0) return n1;
+	return gdc(n2, n1%n2);
+}
+
+void init(string str, grade& g){
+	int pos = 0;
+	int i = 0;
+	if (str[0] == '-') i = 1;
+	while (str[pos] != '/') ++pos;
+	//cout << str.substr(i, pos) << endl;
+	long long num1 = StringtoInt(str.substr(i, pos - i));
+	long long num2 = StringtoInt(str.substr(pos + 1));
+	if (num2 == 0){
+		g.mon = 0;
+		g.ele = 0l;
+		return;
+	}
+	long long tmp = gdc(num1, num2);
+	num1 /= tmp;
+	num2 /= tmp;
+	g.ele = num1;
+	g.mon = num2;
+	g.flag = i == 0 ? false : true;
+}
+
+string add(grade g1, grade g2){
+	if (g1.flag && !g2.flag) { g1.flag = false; return sub(g2, g1); }
+	else if (!g1.flag && g2.flag) { g2.flag = false; return sub(g1, g2); }
+	long long ele = g1.ele*g2.mon + g2.ele*g1.mon;
+	long long mon = g1.mon * g2.mon;
+	long long tmp = gdc(ele, mon);
+	grade g3;
+	if (mon == 0){
+		g3.ele = 0l;
+		g3.mon = 0;
+		return Simplify(g3);
+	}
+	ele /= tmp;
+	mon /= tmp;
+	g3.ele = ele;
+	g3.mon = mon;
+	g3.flag = g1.flag;
+	return Simplify(g3);
+}
+
+string sub(grade g1, grade g2){
+	if (!g1.flag && g2.flag) { g2.flag = false; return add(g1, g2); }
+	else if (g1.flag && !g2.flag) { g2.flag = true; return add(g1, g2); }
+	else if (g1.flag && g2.flag) { sub(g2, g1); }
+	long long ele = g1.ele*g2.mon - g2.ele*g1.mon;
+	long long mon = g1.mon * g2.mon;
+	long long tmp = gdc(abs(ele), mon);
+	grade g3;
+	if (mon == 0){
+		g3.ele = 0l;
+		g3.mon = 0;
+		return Simplify(g3);
+	}
+	ele /= tmp;
+	mon /= tmp;
+	
+	g3.ele = ele;
+	g3.mon = mon;
+	g3.flag = ele > 0 ? false : true;
+	return Simplify(g3);
+}
+
+string mul(grade g1, grade g2){
+	long long ele = g1.ele*g2.ele;
+	long long mon = g1.mon*g2.mon;
+	long long tmp = gdc(ele, mon);
+	grade g3;
+	if (mon == 0){
+		g3.ele = 0l;
+		g3.mon = 0;
+		return Simplify(g3);
+	}
+	ele /= tmp;
+	mon /= tmp;
+	g3.ele = ele;
+	g3.mon = mon;
+	g3.flag = g1.flag == g2.flag ? false : true;
+	return Simplify(g3);
+}
+
+string div(grade g1, grade g2){
+	if (g2.ele == 0)
+		return "Inf";
+	long long ele = g1.ele*g2.mon;
+	long long mon = g1.mon*g2.ele;
+	long long tmp = gdc(ele, mon);
+	grade g3;
+	if (mon == 0){
+		g3.ele = 0l;
+		g3.mon = 0;
+		return Simplify(g3);
+	}
+	ele /= tmp;
+	mon /= tmp;
+	g3.ele = ele;
+	g3.mon = mon;
+	g3.flag = g1.flag == g2.flag ? false : true;
+	return Simplify(g3);
+}
+
+int main()
+{
+	string str1;
+	string str2;
+	while (cin >> str1 >> str2){
+		string num1 = "";
+		string num2 = "";
+		grade g1;
+		grade g2;
+
+		init(str1, g1);
+		init(str2, g2);
+
+		num1 = Simplify(g1);
+		num2 = Simplify(g2);
+
+
+		cout << num1 << " + " << num2 << " = "\
+			<< add(g1, g2) << endl;
+		cout << num1 << " - " << num2 << " = "\
+			<< sub(g1, g2) << endl;
+		cout << num1 << " * " << num2 << " = "\
+			<< mul(g1, g2) << endl;
+		cout << num1 << " / " << num2 << " = "\
+			<< div(g1, g2) << endl;
+	}
+	return 0;
+}
