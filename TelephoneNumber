@@ -1,0 +1,61 @@
+https://www.nowcoder.com/questionTerminal/ceb89f19187b4de3997d9cdef2d551e8
+
+#include <iostream>
+#include <string>
+#include <vector>
+#include <set>
+#include <unordered_map>
+
+using namespace std;
+
+    unordered_map<char, char> mm{ { 'A', '2' },{ 'B', '2'}, {'C', '2'},\
+    {'D', '3'},{'E', '3'},{'F', '3'},{'G', '4'},{'H', '4'},{'I', '4'},\
+    {'J', '5'},{'K', '5'},{'L', '5'},{'M', '6'},{'N', '6'},{'O', '6'},\
+    {'P', '7'},{'Q', '7'},{'R', '7'},{'S', '7'},{'T', '8'},{'U', '8'},\
+    {'V', '8'},{'W', '9'},{'X', '9'},{'Y', '9'},{'Z', '9'}};
+
+void SwitchNum(string str, set<string>& set)
+{
+    string res = "";
+    if(str.empty())
+        return;
+    
+    for(auto &ch:str){
+        if(ch == '-')
+            continue;
+        else{
+            if(ch >= '0' && ch <= '9'){
+                res.push_back(ch);
+            }
+            else{
+                res.push_back(mm[ch]);
+            }
+            if(res.size() == 7)
+                break;
+        }
+    }
+    res.insert(3, 1, '-');
+    set.insert(res);
+}
+
+
+
+int main()
+{
+    int n;
+    
+    while(cin >> n){
+        vector<string> num;
+        set<string> res;
+        while(n--){
+            string str;
+            cin >> str;
+            SwitchNum(str, res);
+        }
+        for(auto &phone:res){
+            cout << phone << endl;
+        }
+        cout << endl;
+    }
+    return 0;
+}
