@@ -1,0 +1,55 @@
+https://www.nowcoder.com/questionTerminal/11cc498832db489786f8a03c3b67d02c
+
+#include <iostream>
+#include <vector>
+#include <string>
+#include <set>
+
+using namespace std;
+
+set<string> s;
+
+void DFS(int m, vector<int>& find)
+{
+
+	if (m == 0){
+		string str = "";
+		for (int index = 1; index < find.size(); index++){
+			if (find[index] == 1){
+				if (str == "")
+					str.push_back(index + '0');
+				else{
+					str.push_back(' ');
+					str.push_back(index + '0');
+				}
+			}
+		}
+		s.insert(str);
+		return;
+	}
+	int sz = m < find.size()?m:find.size()-1;
+	for (int i = 1; i <= sz; i++){
+		if (find[i] == 1)
+			continue;
+		find[i] = 1;
+		DFS(m - i, find);
+		find[i] = 0;
+	}
+		
+}
+
+int main()
+{
+	int n, m;
+	while (cin >> n >> m){
+		int sz = n > m ? m : n;
+		vector<int> find(sz + 1, 0);
+		DFS(m, find);
+
+
+		for (auto& res : s){
+			cout << res << endl;
+		}
+	}
+	return 0;
+}
