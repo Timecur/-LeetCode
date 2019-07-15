@@ -1,0 +1,32 @@
+//// write your code here cpp
+//#include <iostream>
+//#include <string>
+//
+//using namespace std;
+//
+//int main()
+//{
+//	string str;
+//	while (cin >> str){
+//		bool flag = false;
+//		string res;
+//		for (auto &ch : str){
+//			if (flag)
+//			{
+//				res.push_back((ch - 'a' + 'A'));
+//				flag = !flag;
+//				continue;
+//			}
+//			if (ch == '_'){
+//				flag = !flag;
+//			}
+//			else
+//				res.push_back(ch);
+//		}
+//		cout << res << endl;
+//
+//	}
+//
+//	return 0;
+//}
+
