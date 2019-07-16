@@ -1,0 +1,39 @@
+class Solution {
+public:
+    vector<int> printMatrix(vector<vector<int> > matrix) {
+        int i = 0, j = 0, count = 0;
+        vector<int> new_mat;
+        int row = matrix.size();
+        int col = matrix[0].size();
+        int tmp = (min(row,col)+1)/2 ;
+        if(row == 1 && col == 1){
+            new_mat.push_back(matrix[0][0]);
+            return new_mat;
+        }
+        while(tmp--){
+            for(i = count,j = count; j < col; j++){
+                new_mat.push_back(matrix[i][j]);
+            }
+            
+            if((row - 2 )> 0){
+                for(j = col - 1, i += 1;i > count && i < row - 1; i++){
+                    new_mat.push_back(matrix[i][j]);
+                }
+            }
+            
+            for(i = row - 1,j = col - 1; j >= count && i != count; j--){
+                new_mat.push_back(matrix[i][j]);
+            }
+            
+            if((row - 2) > 0 && col != 1){
+                for(j = count, i = row - 2; i > count && i != count ; i--){
+                    new_mat.push_back(matrix[i][j]);
+                }
+            }
+            row--;
+            col--;
+            count++;
+        }
+        return new_mat;
+    }
+};
