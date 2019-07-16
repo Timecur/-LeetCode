@@ -1,3 +1,67 @@
+//#include <iostream>
+//#include <string>
+//#include <vector>
+//#include <unordered_set>
+//#include <set>
+//
+//using namespace std;
+//
+//void Permutation(const string& dest, string ret, vector<int>& find, set<string>& prob){
+//
+//	for (int i = 0; i < dest.size(); i++){
+//		if (ret.size() != dest.size() && find[i] == 0){
+//			ret += dest[i];
+//			find[i] = 1;
+//			Permutation(dest, ret, find, prob);
+//			find[i] = 0;
+//			ret.pop_back();
+//		}
+//		if (ret.size() == dest.size() && dest.compare(ret))
+//			prob.insert(ret);
+//	}
+//
+//}
+//
+//
+//int main()
+//{
+//	unordered_set<string> ms;
+//	int n;
+//	while (cin >> n){
+//		while (n--){
+//			string ret;
+//			cin >> ret;
+//			ms.insert(ret);
+//		}
+//
+//
+//		string dest;
+//		cin >> dest;
+//		set<string> prob;
+//		string str = "";
+//		vector<int> find(dest.size() + 1, 0);
+//		Permutation(dest, str, find, prob);
+//
+//		vector<string> res;
+//		for (auto &word : prob){
+//			if (ms.count(word) > 0){
+//				res.push_back(word);
+//			}
+//		}
+//		cout << res.size();
+//
+//		int num;
+//		cin >> num;
+//		for (int i = 0; i < num; i++){
+//			cout << " " << res[i];
+//		}
+//		cout << endl;
+//	}
+//
+//	return 0;
+//}
+
+
 #include <iostream>
 #include <string>
 #include <vector>
