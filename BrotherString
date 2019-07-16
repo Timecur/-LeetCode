@@ -1,0 +1,52 @@
+#include <iostream>
+#include <string>
+#include <vector>
+#include <algorithm>
+
+using namespace std;
+
+void Compare(const string& dest, vector<string> src, vector<string>& res){
+	for (auto &word : src){
+		if (dest.size() == word.size()){
+			if (dest == word)
+				continue;
+			string tmp1 = dest;
+			string tmp2 = word;
+			sort(tmp1.begin(), tmp1.end());
+			sort(tmp2.begin(), tmp2.end());
+
+			if (tmp1 == tmp2){
+				res.push_back(word);
+			}
+		}
+	}
+}
+
+
+int main()
+{
+	vector<string> ms;
+	int n;
+	while (cin >> n){
+		while (n--){
+			string ret;
+			cin >> ret;
+			ms.push_back(ret);
+		}
+
+		vector<string> res;	
+		string dest;
+		cin >> dest;
+		Compare(dest, ms, res);
+		cout << res.size() << endl;
+		sort(res.begin(), res.end());
+
+		int num;
+		cin >> num;
+		if(num <= res.size())
+            cout << res[num-1] << endl;
+        ms.clear();
+	}
+
+	return 0;
+}
