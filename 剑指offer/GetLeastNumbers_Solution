@@ -1,0 +1,31 @@
+class Solution {
+public:
+    vector<int> GetLeastNumbers_Solution(vector<int> input, int k) {
+        vector<int> output;
+        if(input.empty() || input.size() < k){
+            return output;
+        }
+        MaxHeap()
+        
+        for(int i = 0; i < k; i++)
+            output.push_back(input[i]);
+        return output;
+    }
+};
+
+/*
+class Solution {
+public:
+    vector<int> GetLeastNumbers_Solution(vector<int> input, int k) {
+        vector<int> output;
+        if(input.empty() || input.size() < k){
+            return output;
+        }
+        sort(input.begin(), input.end());
+        
+        for(int i = 0; i < k; i++)
+            output.push_back(input[i]);
+        return output;
+    }
+};
+*/
