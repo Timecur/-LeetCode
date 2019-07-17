@@ -1,0 +1,17 @@
+class Solution {
+public:
+	static bool CMP(int a, int b){
+
+		string newa = (to_string(a) + to_string(b));
+		string newb = (to_string(b) + to_string(a));
+		
+		return newa < newb;
+	}
+	string PrintMinNumber(vector<int> numbers) {
+		sort(numbers.begin(), numbers.end(), CMP);
+		string str = "";
+		for (int i = 0; i < numbers.size(); i++)
+			str += to_string(numbers[i]);
+		return str;
+	}
+};
