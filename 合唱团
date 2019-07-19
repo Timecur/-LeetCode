@@ -1,0 +1,44 @@
+https://www.nowcoder.com/questionTerminal/661c49118ca241909add3a11c96408c8
+
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <limits.h>
+
+using namespace std;
+
+long long max(long long n1, long long n2){ return n1>n2?n1:n2;}
+long long min(long long n1, long long n2){ return n1<n2?n1:n2;}
+
+int main()
+{
+    int n, k, d;
+    vector<long long> stu;
+    while(cin >> n){
+        while(n--){
+            int t;
+            cin >> t;
+            stu.push_back(t);
+        }
+        cin >> k >> d;
+        
+        vector<vector<long long>> mxAbl(k+1, vector<long long>(stu.size(), 0));
+        vector<vector<long long>> mnAbl(k+1, vector<long long>(stu.size(), 0));
+        long long res = 0;
+        
+        for(int i = 0; i < stu.size(); i++){
+            mxAbl[1][i] = mnAbl[1][i] = stu[i];
+            for(int num = 2; num <= k; num++){
+                for(int j = i-1; j >= 0; j--){
+                    if((i-j) <= d){
+                        mxAbl[num][i] = max(mxAbl[num][i], max(mxAbl[num-1][j]*stu[i], mnAbl[num-1][j]*stu[i]));
+                        mnAbl[num][i] = min(mnAbl[num][i], min(mxAbl[num-1][j]*stu[i], mnAbl[num-1][j]*stu[i]));
+                    }
+                }
+            }
+            res = max(mxAbl[k][i], res);
+        }
+        cout << res << endl;
+    }
+    return 0;
+}
