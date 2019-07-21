@@ -1,0 +1,19 @@
+class Solution {
+public:
+    int FirstNotRepeatingChar(string str) {
+        unordered_map<char, int> mm;
+        for(auto&e : str){
+            if(mm.count(e) < 0){
+                mm[e] = 1;
+            }
+            else{
+                mm[e]++;
+            }
+        }
+        for(int i = 0; i < str.size(); i++){
+            if(mm[str[i]]== 1)
+                return i;
+        }
+        return -1;
+    }
+};
