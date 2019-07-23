@@ -1,0 +1,16 @@
+class Solution {
+public:
+    string LeftRotateString(string str, int n) {
+        if(n == 0 || str.size() == 0)
+            return str;
+        string copyStr(str.size(),'\n');
+        n %= str.size();
+        for(int i = 0; i < n; i++){
+            copyStr[str.size()-n+i] = str[i];
+        }
+        for(int k = 0,j = n; j <　str.size(); k++,j++){
+            copyStr[k] = str[j];
+        }
+        return copyStr;
+    }
+};
