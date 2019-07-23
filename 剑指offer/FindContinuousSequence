@@ -1,0 +1,29 @@
+class Solution {
+public:
+    vector<vector<int> > FindContinuousSequence(int sum) {
+          // 滑动窗口
+        int small = 1;
+        int large = 2;
+        
+        vector<vector<int> >v;
+
+        while(small < large){
+            int res = (small+large)*(large-small+1)/2;
+            if(res == sum){
+                vector<int> v2;
+                for(int i = small; i <= large; i++){
+                    v2.push_back(i);
+                }
+                v.push_back(v2);
+                large++;
+            }
+            else if(res < sum){
+                large++;
+            }
+            else{
+                small++;
+            }
+        }
+        return v;
+    }
+};
