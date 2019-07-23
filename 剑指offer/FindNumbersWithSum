@@ -1,0 +1,26 @@
+class Solution {
+public:
+    vector<int> FindNumbersWithSum(vector<int> array,int sum) {
+        int end = 0;
+        vector<int> result;
+        int i = array.size();
+        
+        while(array[i] > sum && i > 0){
+            i--;
+        }
+        end = i;
+        while(result.empty() && 0 != end){
+            int tmp = sum - array[end];
+            int begin = 0;
+            while(array[begin] < tmp){
+                begin++;
+            }
+            if(array[begin] == tmp){
+                result.push_back(tmp);
+                result.push_back(array[end]);
+            }
+            end -= 1;
+        }
+        return result;
+    }
+};
