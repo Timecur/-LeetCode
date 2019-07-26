@@ -1,0 +1,35 @@
+class Solution {
+public:
+    int Complete(const vector<int> &num, int begin, int end){
+        int i = begin;
+        while(begin+1 < end){
+            if(num[begin] <= num [begin+1]){
+                i = begin+1;
+            }
+            begin++;
+        }
+        return i;
+    }
+    
+    vector<int> maxInWindows(const vector<int>& num, unsigned int size)
+    {
+        // 滑动窗口个数 = num.size()-size+1
+        vector<int> v;
+        if(num.empty || num.size() < size || 0 == size)
+            return v;
+        
+        if(size == 1)
+            return num;
+            
+        int maxPos = 0; // 最大元素位置
+        for(int i = 0; i < num.size() - size + 1; i++){
+            if(i == 0 || maxPos < i)
+                maxPos = Complete(num, i, i+size);
+            else
+                maxPos = num[maxPos] > num[i+size-1]? maxPos:(i+size-1);
+            v.push_back(num[maxPos]);
+        }
+        
+        return v;
+    }
+};
