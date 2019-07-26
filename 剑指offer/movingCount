@@ -1,0 +1,43 @@
+class Solution {
+public:
+	int AddFigure(int x, int y)
+	{
+		int sum = 0;
+		while (x > 0 || y > 0){
+			sum = sum + x % 10 + y % 10;
+			x /= 10;
+			y /= 10;
+		}
+		return sum;
+	}
+
+	int IsNextStep(int threshold, int rows, int cols, bool* map, int i, int j)
+	{
+		if (i >= rows || i < 0 || j >= cols || j < 0 || map[i*cols+j] || AddFigure(i, j) > threshold)
+			return 0;
+
+		map[i*cols + j] = true;
+		return 1+IsNextStep(threshold, rows, cols, map, i + 1, j) + IsNextStep(threshold, rows, cols, map, i, j + 1) + \
+			IsNextStep(threshold, rows, cols, map, i - 1, j) + IsNextStep(threshold, rows, cols, map, i, j - 1);
+	}
+
+	int movingCount(int threshold, int rows, int cols)
+	{
+		if (rows < 0 || cols < 0)
+			return 0;
+	/*	bool** map = new bool*[cols];
+		for (int i = 0; i < cols; i++)
+			map[i] = new bool[rows];
+		for (int i = 0; i < rows; i++){
+			for (int j = 0; j < cols; j++){
+				map[i][j] = false;
+			}
+		}*/
+		bool *map = new bool[rows*cols];
+		for (int i = 0; i < rows*cols; ++i)
+			map[i] = false;
+		int res = IsNextStep(threshold, rows, cols, map, 0, 0);
+		delete []map;
+		return res;
+	}
+};
