@@ -1,0 +1,33 @@
+/*
+struct TreeNode {
+    int val;
+    struct TreeNode *left;
+    struct TreeNode *right;
+    TreeNode(int x) :
+            val(x), left(NULL), right(NULL) {
+    }
+};
+*/
+class Solution {
+public:
+    void Inorder(TreeNode* pRoot, vector<TreeNode*>& v, int k)
+    {
+        if(pRoot){
+            Inorder(pRoot->left, v, k);
+            v.push_back(pRoot);
+            // 如果已经有k个节点直接返回
+            if(v.size() == k)
+                return;
+            Inorder(pRoot->right, v, k);
+        }
+    }
+    TreeNode* KthNode(TreeNode* pRoot, int k)
+    {
+        vector<TreeNode*> v;
+        Inorder(pRoot, v, k);
+        if(v.size() < k || k <= 0)
+            return nullptr;
+        return v[k-1];
+    }
+    
+};
