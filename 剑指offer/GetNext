@@ -1,0 +1,42 @@
+/*
+struct TreeLinkNode {
+    int val;
+    struct TreeLinkNode *left;
+    struct TreeLinkNode *right;
+    struct TreeLinkNode *next;
+    TreeLinkNode(int x) :val(x), left(NULL), right(NULL), next(NULL) {
+        
+    }
+};
+*/
+class Solution {
+public:
+    TreeLinkNode* GetNext(TreeLinkNode* pNode)
+    {
+        // 为空树返回空
+        if(nullptr == pNode)
+            return nullptr;
+        // 右子树不为空
+        if(pNode->right){
+            // 遍历右子树
+            pNode = pNode->right;
+            // 如果右子树，存在左分支，则向左遍历到为空前的节点
+            while(pNode->left)
+                pNode = pNode->left;
+            return pNode;
+        }
+        TreeLinkNode* pPreNode = pNode;// 记录pNode改变之前的节点
+        // 向上遍历
+        while(pNode->next){
+            pPreNode = pNode; 
+            pNode = pNode->next;
+            // 如果前一个节点是当前根节点的左子树，则返回该跟节点
+            // 否则继续向上遍历
+            if(pNode->left == pPreNode)
+                return pNode;
+        }
+        if(pPreNode == pNode->left)
+            return pNode;
+        return nullptr;
+    }
+};
