@@ -1,0 +1,90 @@
+/*
+    这段代码非常挫，急需优化
+*/
+
+class Solution {
+public:
+    bool isNumeric(char* string)
+    {
+        
+        if('\0' == *string || nullptr == string)
+            return false;
+        
+        vector<int> mark_pos;
+        char *pstr = string;
+        bool flagP = false; 
+        bool flagE = false;
+        int count = 0;
+        while('\0' != *pstr){
+            
+            if(!isdigit(*pstr) && *pstr != 'e' && *pstr != 'E' && *pstr != '+' && *pstr != '-' && *pstr != '.')
+                return false;
+          
+            // 检测所有符号位的位置，记录在数组中
+            if('-' == *pstr || '+' == *pstr){
+                mark_pos.push_back(count); 
+            }
+            
+            // 小数点只能有一个
+            // 小数点后一定为数字
+            if('.' == *pstr){
+                
+                if(flagP || flagE)
+                    return false;
+                flagP = true;
+                
+                if(isdigit(string[count+1]))
+                    ;
+                else
+                    return false;
+            }
+            
+            if('E' == *pstr || 'e' == *pstr){
+                
+                if(flagE)
+                    return false;
+                flagE = true;
+                
+                if(0 == count || !isdigit(string[count-1]) || (!isdigit(string[count+1]) && '-' != string[count+1]
+                  && '+' != string[count+1]))
+                    return false;
+            }
+            
+            count++;
+            pstr++;
+        }
+        
+        if(mark_pos.size() == 2){
+            if(string[mark_pos[1] - 1 ] != 'E' ||  string[mark_pos[1] - 1 ] != 'e' &&
+               !isdigit(string[mark_pos[0] + 1 ]) || !isdigit(string[mark_pos[1] + 1 ]))
+                return false;
+        }
+        else if(mark_pos.size() == 1){
+            if(!isdigit(string[mark_pos[0] + 1]) && '.' != (string[mark_pos[0] + 1]))
+                return false;
+            if(mark_pos[0] != 0 && isdigit(string[mark_pos[0] - 1]) && isdigit(string[mark_pos[0] + 1]))
+                return false;
+        }
+
+        return true;
+    }
+
+};
+
+/*
+        int num = atoi(string);
+        int pos = 0;
+        while('.' != *string++){
+            pos++;
+        }
+        if(pos){
+            for(int i = pos+1; i <= strlen(string); i++){
+                if(string[i] <= '9' && string[i]　>= '0')
+                    return true;
+                else
+                    return false;
+            }
+        }
+        
+        return abs(num) > 0;
+*/
