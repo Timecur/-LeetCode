@@ -1,0 +1,16 @@
+class Solution {
+public:
+    int Add(int num1, int num2)
+    {
+        int tmp1, tmp2;
+        tmp1 = num1 ^ num2;
+        tmp2 = num1 & num2;
+        if(0 == tmp2){
+            return tmp1;
+        }
+        else{
+            tmp2 <<= 1;
+            return Add(tmp1, tmp2);
+        }
+    }
+};
