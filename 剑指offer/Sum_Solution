@@ -1,0 +1,53 @@
+/*
+class Solution {
+public:
+    int Sum_Solution(int n) {
+        Sum::ReSum();
+        Sum* ps = new Sum[n];
+        delete[] ps;
+        ps = nullptr;
+        return Sum::GetSum();
+    }
+    class Sum{
+    public:
+        Sum(){
+            _count++;
+            _sum += _count;
+        }
+        static int GetSum()
+        {
+            return _sum;
+        }
+        static void ReSum()
+        {
+            _count = 0;
+            _sum = 0;
+        }
+    private:
+        static int _sum;
+        static int _count;
+    };
+};
+int Solution::Sum::_count = 0;
+int Solution::Sum::_sum = 0;
+
+*/
+
+class Solution{
+    
+    template<int n>
+    struct Sum<n>{
+        const static int value;
+    };
+    
+    
+    const int Sum<n>::value = Sum<n-1>::value + n;
+    
+    template<>
+    struct Sum<0>{
+        const static int value;
+    };
+    
+    const int Sum<0>::value = 0;
+    
+};
