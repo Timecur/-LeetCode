@@ -1,0 +1,15 @@
+class Solution {
+public:
+    vector<int> multiply(const vector<int>& A) {
+        vector<int> B(A.size(), 1);
+        for(int j = 0; j < B.size(); j++){
+            for(int i = j+1; i < A.size(); i++){
+                B[j] *= A[i];
+            }
+            for(int k = 0; k < j; k++){
+                B[j] *= A[k];
+            }
+        }
+        return B;
+    }
+};
