@@ -1,0 +1,27 @@
+class Solution {
+public:
+	int StrToInt(string str) {
+		if (0 == str.size())
+			return 0;
+
+		long long ret = 0;
+		int tmp = 0;
+		bool flag = false;
+		if ('-' == str[0] || '+' == str[0]){
+			tmp = ((str[0] == '-') ? -1 : 1);
+			flag = true;
+		}
+		for (auto &e : str){
+			if (flag){
+				flag = !flag;
+				continue;
+			}
+
+			if (e > '9' || e < '0'){
+				return 0;
+			}
+			ret = (ret << 1) + (ret << 3) + (e - '0');
+		}
+		return (tmp != 0)? (tmp*ret):ret;
+	}
+};
