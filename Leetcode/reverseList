@@ -1,0 +1,60 @@
+反转链表
+反转一个单链表。
+
+示例:
+
+输入: 1->2->3->4->5->NULL
+输出: 5->4->3->2->1->NULL
+进阶:
+你可以迭代或递归地反转链表。你能否用两种方法解决这道题？
+
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+
+/*
+// 递归
+class Solution {
+public:
+    void operation(ListNode* node, ListNode* next){
+        if(next == nullptr) return;
+        
+        operation(next, next->next);
+        swap(node->val, next->val);
+    }
+    
+    ListNode* reverseList(ListNode* head) {
+        if(head == nullptr) return head;
+        ListNode* copy = head;
+        while(copy->next != nullptr){
+            operation(copy, copy->next);
+            copy = copy->next;
+        }
+        return head;
+    }
+};
+*/
+
+// 迭代 
+class Solution {
+public:
+    ListNode* reverseList(ListNode* head) {
+        if(head == nullptr) return head;
+        ListNode* pre = head;
+        ListNode* cur = pre->next;
+        
+        pre->next = NULL;
+        while(cur != nullptr){
+            ListNode* tmp = cur->next;
+            cur->next = pre;
+            pre = cur;
+            cur = tmp;
+        }
+        return pre;
+    }
+};
