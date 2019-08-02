@@ -1,0 +1,97 @@
+
+
+class MinStack {
+public:
+    struct ListNode{
+	ListNode()
+	:next(nullptr),
+	val(0),
+	curMin(0){}
+	int val, curMin;
+	ListNode* next;
+    };
+	/** initialize your data structure here. */
+	MinStack(){
+		head = new ListNode();
+	}
+
+	void push(int x) {
+		ListNode *node = new ListNode();
+		node->val = x;
+		node->next = head;
+		if (node->next->next != nullptr) node->curMin = min(node->val, node->next->curMin);
+		else node->curMin = node->val;
+		head = node;
+	}
+
+	void pop() {
+		if (head->next != nullptr)
+			head = head->next;
+	}
+
+	int top() {
+		if (head->next != nullptr)
+			return head->val;
+		else
+			return -1;
+	}
+
+	int getMin() {
+		return head->curMin;
+	}
+
+private:
+	ListNode* head;
+
+};
+
+/*
+class MinStack {
+public:
+	MinStack() {
+		pos = 0;
+	}
+
+	void push(int x) {
+		++pos;
+		if (v.size() <= pos){
+			v.resize(pos+2, 0);
+		}
+		v[pos] = x;
+	}
+
+	void pop() {
+		--pos;
+	}
+
+	int top() {
+		if (pos > 0)
+			return v[pos];
+		return -1;
+	}
+
+	int getMin() {
+		if (pos <= 0)
+			return -1;
+		vector<int> copy;
+		for (int i = 1; i <= pos; i++){
+			copy.push_back(v[i]);
+		}
+		sort(copy.begin(), copy.end());
+		return copy[0];
+	}
+
+private:
+	vector<int> v;
+	int pos;
+};
+*/
+
+/**
+ * Your MinStack object will be instantiated and called as such:
+ * MinStack* obj = new MinStack();
+ * obj->push(x);
+ * obj->pop();
+ * int param_3 = obj->top();
+ * int param_4 = obj->getMin();
+ */
