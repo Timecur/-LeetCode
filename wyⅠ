@@ -1,0 +1,69 @@
+// wyI
+#include <iostream>
+#include <stack>
+#include <queue>
+
+using namespace std;
+
+struct win{
+	int xs;
+	int ys;
+	int w;
+	int h;
+	int no;
+};
+
+struct chick{
+	int mx;
+	int my;
+};
+
+int checkWin(stack<win>& s, chick c){
+	int res = -1;
+	stack<win> s2;
+	bool flag = false;
+	win ret;
+	while (!s.empty()){
+		ret = s.top();
+		s.pop();
+		if (ret.xs <= c.mx && ret.ys <= c.my &&\
+			(ret.xs + ret.w) >= c.mx && (ret.ys + ret.h) >= c.my){
+			res = ret.no;
+			flag = true;
+			break;
+		}
+		else
+			s2.push(ret);
+	}
+	while (!s2.empty()){
+		win t = s2.top();
+		s2.pop();
+		s.push(t);
+	}
+	if (flag)
+		s.push(ret);
+
+	return res;
+}
+
+int main()
+{
+	int n, m;
+	while (cin >> n >> m){
+		stack<win> s;
+		for (int i = 0; i < n; i++){
+			win t;
+			cin >> t.xs >> t.ys >> t.w >> t.h;
+			t.no = i + 1;
+			s.push(t);
+		}
+
+		for (int j = 0; j < m; j++){
+			chick c;
+			cin >> c.mx >> c.my;
+			cout << checkWin(s, c) << endl;
+		}
+
+	}
+	return 0;
+}
