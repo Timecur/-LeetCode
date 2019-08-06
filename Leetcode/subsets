@@ -1,0 +1,34 @@
+class Solution {
+public:
+    /*
+        数组非空，res预先插入起始情况(无论数据量大小，默认res首元素是{nums[0]})
+        之后没插入一个都在前面基础上增加，当然单独插入单个元素
+        {1}
+        {2} {1，2}
+        {3} {1,3} {2,3} {1,2,3}
+        
+        最后插入空集
+        {[]}
+    
+    */
+    
+    vector<vector<int>> subsets(vector<int>& nums) {
+        vector<vector<int>> res;
+        if(nums.empty()) return res;
+        
+        res.push_back({nums[0]});
+        for(int i = 1; i < nums.size(); i++){
+            int sz = res.size();
+            res.push_back({nums[i]});
+            for(int j = 0; j < sz; j++){
+                vector<int> tmp(res[j]);
+                tmp.push_back(nums[i]);
+                res.push_back(tmp);               
+            }
+        }        
+        
+        res.push_back({});
+       
+        return res;
+    }
+};
