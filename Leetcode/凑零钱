@@ -1,0 +1,67 @@
+#include<bits/stdc++.h>
+using namespace std;
+int arr[10001];
+int sum, n, m, t, flag;
+int money[10001];
+int book[10001];
+bool compare(int a, int b)
+{
+	return a < b;
+}
+ 
+void dfs(int k)
+{
+	if (sum > m)	return ;
+	if (sum == m)
+	{
+		flag = 1;
+		printf("%d", money[0]);
+		for (int i = 1; i < t; ++i)
+		{
+			printf(" %d", money[i]);
+		}
+	}
+	else 
+	{
+		for (int i = k; i < n; ++i)
+		{
+			if (!book[i] && !flag)
+			{
+				book[i] = 1;
+				money[t++] = arr[i];
+				sum += arr[i];
+				dfs(k + 1);
+				sum -= arr[i];
+				money[--t] = 0;
+				book[i]= 0;
+			}
+		}
+	}	
+	
+}
+ 
+ 
+int main()
+{
+	scanf("%d %d", &n, &m);
+	int S = 0;
+	for (int i = 0; i < n; ++i)
+	{
+		scanf("%d", &arr[i]);
+		S += arr[i];
+	}
+	if (S < m) // 所有的钱加起来也满足不了需要付的钱，这样就不用深搜了,不加这个条件最后一个测试点超时
+	{
+		printf("No Solution\n");
+	}
+	else
+	{
+		sort(arr, arr + n, compare); // 第三个参数可以不写，反正默认升序，写在这里方便参考降序，因为我会忘啊
+		dfs(0);
+		if (!flag)
+		{
+			printf("No Solution\n");
+		}	
+	}
+	return 0;
+}
