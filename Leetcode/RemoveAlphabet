@@ -1,0 +1,25 @@
+#include <iostream>
+#include <string>
+#include <unordered_set>
+
+using namespace std;
+
+int main()
+{
+    string dest, src;
+    while(cin >> dest >> src){
+        unordered_set<char> s;
+        for(auto &e : src)
+            s.insert(e);
+        string::iterator it;
+        for(it = dest.begin(); it != dest.end();){
+            if(s.count(*it) > 0)
+                dest.erase(it++);
+            else
+                ++it;
+        }
+        cout << dest << endl;
+    }
+    
+    return 0;
+}
