@@ -1,3 +1,5 @@
+https://leetcode-cn.com/problems/serialize-and-deserialize-binary-tree/submissions/
+
 /**
  * Definition for a binary tree node.
  * struct TreeNode {
@@ -26,7 +28,7 @@ public:
                 res += ",null";
                 continue;
             }
-            else if(t->val >= 0)
+            else 
                 res += ","+to_string(t->val);
             
             if(t != nullptr){
@@ -56,7 +58,7 @@ public:
         vector<TreeNode*>v;
         string num = "";
         for(int i = 0; i < data.size();){
-            if(isdigit(data[i])){
+            if(isdigit(data[i]) || data[i] == '-'){
                 num += data[i];
                 ++i;
             }
@@ -78,13 +80,14 @@ public:
 
         int pre = 0;
         for(int i = 0; i < v.size(); i++){
-            if(i*2+1 < v.size() && v[i] != nullptr){
-               v[i]->left = v[i*2+1];
-               ++pre;
-            }
-            if(i*2+2 < v.size() && v[i] != nullptr){
-               v[i]->right = v[i*2+2];
-               ++pre;
+            if(v[i] != nullptr){
+                if(pre*2+1 < v.size()){
+                   v[i]->left = v[pre*2+1];
+                }
+                if(pre*2+2 < v.size()){
+                   v[i]->right = v[pre*2+2];
+                }
+                ++pre;
             }
         }
         return v[0];
