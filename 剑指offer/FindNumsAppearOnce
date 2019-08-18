@@ -1,0 +1,27 @@
+class Solution {
+public:
+    void FindNumsAppearOnce(vector<int> data,int* num1,int *num2) {
+        
+        map<int, int> mp;
+        *num1 = -1;
+        *num2 = -1;
+        for(const auto& e:data){
+            if(mp.count(e) > 0)
+                mp[e]++;
+            else
+                mp[e] = 1;
+        }
+        map<int, int>::iterator it;
+        for(it = mp.begin();it != mp.end();it++){
+            if(-1 == *num1 && 1 == it->second){
+                *num1 = it->first;
+            }
+            else if(1 == it->second){
+                *num2 = it->first;
+            }
+            if(-1 != *num1 && -1 != *num2){
+                return;
+            }
+        }
+    }
+};
