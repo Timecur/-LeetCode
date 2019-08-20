@@ -1,0 +1,35 @@
+class Solution {
+public:
+    bool isMatch(string s, string p) {
+        int ss = s.size();
+        int ps = p.size();
+        vector<vector<int>> dp(ss+5, vector<int>(ps+5, 0));
+        
+        dp[0][0] = 1;
+        for(int i = 1; i <= ps; i++){
+           if(p[i-1] == '*')
+               // 初始化： 
+               //   i-1是匹配多个前面元素
+               //   i-2是匹配0个前面元素
+                dp[0][i] = dp[0][i-1] || dp[0][i-2];
+        }
+        
+        for(int i = 1; i <= ss; i++){
+            for(int j = 1; j <= ps; j++){
+                if(s[i-1] == p[j-1] || p[j-1] == '.'){
+                    dp[i][j] = dp[i-1][j-1];
+                }
+                else if(p[j-1] == '*'){
+                    if(s[i-1] == p[j-2] || p[j-2] == '.')
+                        dp[i][j] = dp[i][j-2] || dp[i][j-1] || dp[i-1][j];
+                    else{
+                        dp[i][j] = dp[i][j-2];
+                    }
+                }
+                else
+                    dp[i][j] = 0;
+            }
+        }
+        return dp[ss][ps] == 1;
+    }
+};
