@@ -1,0 +1,30 @@
+class Solution {
+public:
+    void nextPermutation(vector<int>& nums){
+        if(nums.size() <= 1) return;
+
+        int pos = INT_MIN;
+        int sp = INT_MAX;
+        for(int i = 1; i < nums.size(); i++){
+            if(pos != INT_MIN){
+                if(nums[i] > nums[pos] && nums[sp] > nums[i])
+                    sp = i;
+            }
+            if(nums[i-1] >= nums[i]){
+                continue;
+            }
+            else {
+                pos = i-1;
+                sp = i;
+            }
+        }
+        if(pos != INT_MIN){
+            swap(nums[pos], nums[sp]);
+            sort(nums.begin()+pos+1, nums.end());
+        }
+        else{
+            sort(nums.begin(), nums.end());    
+        }
+    }
+};
+    
