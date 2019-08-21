@@ -1,0 +1,22 @@
+class Solution {
+public:
+    vector<vector<int>> res;
+
+    void EachReturn(vector<int>& nums, int n){
+        if(nums.size() == n+1)
+            res.push_back(nums);
+        
+        for(int i = n; i < nums.size(); i++){
+            swap(nums[i], nums[n]);
+            EachReturn(nums, n+1);
+            swap(nums[i], nums[n]);
+        }
+    }
+    
+    vector<vector<int>> permute(vector<int>& nums) {
+        if(nums.empty()) return res;
+        
+        EachReturn(nums, 0);
+        return res;
+    }
+};
