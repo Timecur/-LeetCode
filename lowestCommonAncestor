@@ -1,0 +1,75 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
+        if(root == nullptr || root == p || root == q) return root;
+        
+        // 每次递归都更新了最近的根节点
+        TreeNode* left = lowestCommonAncestor(root->left, p, q);
+        TreeNode* right = lowestCommonAncestor(root->right, p, q);
+        
+        // p q分别在左右子树
+        if(left != nullptr && right != nullptr) return root;
+        // p q在同一侧，或不存在
+        return left == nullptr?right:left;
+    }
+};
+
+
+/*
+class Solution {
+public:
+    TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
+        if(root == nullptr || p == nullptr || q == nullptr) return nullptr;
+        if(p == root || q == root) return root;
+        
+        queue<TreeNode*> que;
+        que.push(root);
+        
+        vector<TreeNode*> v;
+        int index_p = -1;
+        int index_q = -1;
+        
+        while(index_p < 0 || index_q < 0){
+            if(que.front() == nullptr){
+                TreeNode* t = nullptr;
+                que.push(t);
+                que.push(t);                
+            }
+            else{
+                if(que.front()->val == p->val){
+                    index_p = v.size();
+                }
+                if(que.front()->val == q->val){
+                    index_q = v.size();
+                }
+
+                que.push(que.front()->left);
+
+                que.push(que.front()->right);
+            }
+            v.push_back(que.front()); 
+            que.pop();
+        }
+        
+        while(index_p != index_q){
+            if(index_p > index_q){
+                index_p = (index_p-1)/2;
+            }
+            else{
+                index_q = (index_q-1)/2;
+            }
+        }
+        
+        return v[index_q];
+    }
+};
+*/
