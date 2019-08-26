@@ -1,0 +1,106 @@
+class Solution {
+public:
+    string decodeString(string str) {
+        string res = "";
+        
+        stack<int> c;
+        stack<string> s;
+        
+        int num = 0;
+        for(int i = 0; i < str.size(); i++){
+            if(isdigit(str[i])){
+                num = num*10 + (str[i]-'0');
+            }
+            else if(str[i] == '['){
+                c.push(num);
+                s.push(res);
+                num = 0;
+                res = "";
+            }
+            else if(isalpha(str[i])){
+                res += str[i];
+            }
+            else {
+                int n = c.top();
+                c.pop();
+                
+                for(int j = 0; j < n; j++){
+                    s.top() += res;    
+                }
+                
+                res = s.top();
+                s.pop();
+            }
+            
+        }
+        return res;
+    }
+};
+
+/*
+    string decodeString(string str) {
+        string res = "";
+        
+        stack<int> c;
+        stack<string> s;
+        
+        int num = 0;
+        int count = 0;
+        for(int i = 0; i < str.size(); i++){
+            if(isdigit(str[i])){
+                num = num*10 + (str[i]-'0');
+                if(res != ""){
+                    s.push(res);
+                    res = "";
+                }
+            }
+            else if(str[i] == '['){
+                c.push(num);
+                num = 0;
+                ++count;
+            }
+            else if(isalpha(str[i])){
+                res += str[i];
+            }
+            else {
+                if(str[i-res.size()-1] == ']'){
+                    res = s.top()+res;
+                    s.pop();
+                }
+                --count;
+                int n = c.top();
+                c.pop();
+                
+                string tmp=""; 
+                
+                if(res == ""){
+                    res = s.top();
+                    s.pop();
+                }
+                while(n--){
+                    tmp += res; 
+                }
+                res = tmp;
+                if(count != 0){
+                    tmp = res;
+                    if(!s.empty()){
+                        res = s.top();
+                        s.pop();
+                    }
+                    else
+                        res = "";
+                    res += tmp;
+                }
+                s.push(res);
+                res = "";
+            }
+            
+        }
+        while(!s.empty()){
+            res = s.top()+res;
+            s.pop();
+        }
+        return res;
+    }
+
+*/
