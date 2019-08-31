@@ -1,0 +1,128 @@
+class Solution {
+public:
+    double EachResult(int n1, int n2, vector<vector<double>> &red, vector<int> &find, bool *flag, double cur){
+        if (find[n1] == 1) return -1.0;
+
+        if (n1 == n2){
+            return 1.0;
+        }
+        else{
+            if (red[n1][n2] != -1.0){
+                *flag = true;
+                return cur*red[n1][n2];
+            }
+            for (int i = 0; i < red[n1].size(); i++){
+                if (n1 == i) continue;
+                if (red[n1][i] != -1.0){
+                    if (find[i] == 1) continue;
+                    find[n1] = 1;
+                    int pre = cur;
+                    cur = EachResult(i, n2, red, find, flag, cur*red[n1][i]);
+                    if (*flag){
+                        find[n1] = 0;
+                        break;
+                    }
+                    cur = pre;
+                }
+            }
+        }
+        if(*flag)
+            return cur;
+        else
+            return -1.0;
+    }
+
+    vector<double> calcEquation(vector<vector<string>>& equations, vector<double>& values, vector<vector<string>>& queries) {
+        vector<double> res;
+        if (equations.empty()) return res;
+
+        map<string, int> mm;
+
+        int sz = equations.size();
+        int index = 0;
+        for (int i = 0; i < sz; ++i){
+            if (mm.count(equations[i][0]) <= 0){
+                mm[equations[i][0]] = index;
+                ++index;
+            }
+            if (mm.count(equations[i][1]) <= 0){
+                mm[equations[i][1]] = index;
+                ++index;
+            }
+        }
+
+        vector<vector<double>> red(index, vector<double>(index, -1.0));
+        vector<int> find(index, 0);
+
+        for (int i = 0; i < sz; ++i){
+            red[mm[equations[i][0]]][mm[equations[i][1]]] = values[i];
+            red[mm[equations[i][1]]][mm[equations[i][0]]] = 1.0 / values[i];
+            red[mm[equations[i][0]]][mm[equations[i][0]]] = 1.0;
+            red[mm[equations[i][1]]][mm[equations[i][1]]] = 1.0;
+        }
+
+        bool flag = false;
+        double cur = 1.0;
+        for (int j = 0; j < queries.size(); j++){
+            if (mm.count(queries[j][0]) <= 0 || mm.count(queries[j][1]) <= 0){
+                res.push_back(-1.0);
+                continue;
+            }
+            res.push_back(EachResult(mm[queries[j][0]], mm[queries[j][1]], red, find, &flag, cur));
+            cur = 1.0;
+            flag = false;
+        }
+
+        return res;
+    }
+};
+
+/*
+// 错误原因： 它是数据是字符串，不是单个字符
+    double EachResult(int n1, int n2, vector<vector<double>> &red, vector<int> &find, double cur){
+        if (find[n1] == 1) return -1.0;
+        
+        if (red[n1][n1] == -1.0 || red[n2][n2] == -1.0)
+            cur = -1.0;
+        else if (n1 == n2){
+            cur *= 1.0;
+        }
+        else{
+            if (red[n1][n2] != -1.0)
+                return cur*red[n1][n2];
+            for (int i = 0; i < red[n1].size(); i++){
+                if (n1 == i) continue;
+                if (red[n1][i] != -1.0){
+                    find[n1] = 1;
+                    cur = EachResult(i, n2, red, find, cur * red[n1][i]);
+                    find[n1] = 0;
+                    if (cur != -1.0)break;
+                }
+            }
+        }
+
+        return cur;
+    }
+
+    vector<double> calcEquation(vector<vector<string>>& equations, vector<double>& values, vector<vector<string>>& queries) {
+
+        vector<vector<double>> red(27, vector<double>(27, -1.0));
+        vector<int> find(27, 0);
+
+        for (int i = 0; i < equations.size(); i++){
+            red[equations[i][0][0] - 'a'][equations[i][1][0] - 'a'] = values[i];
+            red[equations[i][1][0] - 'a'][equations[i][0][0] - 'a'] = 1.0/values[i];
+            red[equations[i][0][0] - 'a'][equations[i][0][0] - 'a'] = 1.0;
+            red[equations[i][1][0] - 'a'][equations[i][1][0] - 'a'] = 1.0;
+        }
+
+        vector<double> res;
+        double cur = 1.0;
+        for (int j = 0; j < queries.size(); j++){
+            res.push_back(EachResult(queries[j][0][0] - 'a', queries[j][1][0] - 'a', red, find, cur));
+            cur = 1.0;
+        }
+        return res;
+    }
+
+*/
