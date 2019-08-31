@@ -1,0 +1,25 @@
+class Solution {
+public:
+    int lengthOfLongestSubstring(string s) {
+        if (s.size() < 2) return s.size();
+
+        vector<int> dp(s.size() + 5, 0);
+        map<char, int> red; // 上一次相同字符出现位置
+
+        int res = 1;
+        dp[0] = 1;
+        red[s[0]] = 1;
+        for (int i = 1; i < s.size(); ++i){
+            if (red.count(s[i]) <= 0){
+                dp[i] = dp[i - 1] + 1;
+            }
+            else{
+                dp[i] = min(i - red[s[i]]+1, dp[i-1]+1);
+            }
+            red[s[i]] = i+1;
+            res = max(res, dp[i]);
+        }
+
+        return res;
+    }
+};
