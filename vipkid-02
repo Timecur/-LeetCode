@@ -1,0 +1,55 @@
+#include <iostream>
+#include <vector>
+#include <set>
+#include <utility>
+#include <algorithm>
+
+using namespace std;
+
+DFS(vector<int> &num, int cur, vector<int>& find){
+	find[cur] = 1;
+	res += num[cur];
+
+	if (res == 0) return ;
+	for (int i = 0; i < num.size(); ++i){
+		cur = i;
+		if (cur >= 0 && cur < num.size() && find[cur] != 0)
+			continue;
+		else{
+			if (res )
+			DFS(num, cur, find);
+		}
+	}
+}
+
+int main()
+{
+	int n;
+	vector<int> v;
+	while (cin.peek() != '\n' && cin >> n){
+		v.push_back(n);
+	}
+	set<pair<int, int>> s;
+	int sz = v.size();
+	int count = 0;
+	for (int i = 0; i < sz; ++i){
+		int ret = v[i];
+		if (ret == 0) {
+			s.insert(make_pair(0, 0));
+			continue;
+		}
+		for (int j = i + 1; j < sz; ++j){
+			ret += v[j];
+			if (ret == 0) { 
+				int x = v[j]<0 ? v[j] : ret - v[j];
+				int y = v[j]>0 ? v[j] : ret - v[j];
+				s.insert(make_pair(x, y));
+				
+			}
+			ret -= v[j];
+		}
+	}
+	cout << s.size() << endl;
+
+	return 0;
+}
