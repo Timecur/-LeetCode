@@ -1,0 +1,35 @@
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+int main()
+{
+	int n, k;
+	vector<int> num;
+
+	while (cin.peek() != '\n' && cin >> n){
+		num.push_back(n);
+	}
+	cin >> k;
+	if (num.size() < k) return -1;
+
+	vector<double> res(num.size() - k + 1);
+	double red = 0;
+	int cur = 0;
+	for (int i = 0; i < num.size(); ++i){
+		if (i < k){
+			red += num[i];
+		}
+		else{
+			printf("%.2f ", (red*1.0 / k));
+			red -= num[cur];
+			red += num[i];
+			++cur;
+		}
+	}
+	printf("%.2f\n", (red*1.0 / k));
+
+
+	return 0;
+}
