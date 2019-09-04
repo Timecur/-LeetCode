@@ -1,0 +1,79 @@
+class Solution {
+public:
+    
+    // 排序+双指针
+    vector<vector<int>> threeSum(vector<int>& nums) {
+        vector<vector<int>> res;
+        if(nums.size() < 3) return res;
+        sort(nums.begin(), nums.end());
+        
+        int i, j, k;
+        
+        for(int i = 0; i < nums.size(); ++i){
+            if(nums[i] <= 0){
+                j = i+1;
+                k = nums.size()-1;
+                while(j < k){
+                    if(abs(nums[i]) < (nums[j]+nums[k]))
+                        --k;
+                    else if(abs(nums[i]) > (nums[j]+nums[k]))
+                        ++j;
+                    else{
+                        if(res.empty()){
+                            res.push_back({nums[i], nums[j], nums[k]});     
+                        }
+                        else{
+                            int t = res.size()-1;
+                            bool flag = false;
+                            while(t >= 0 && nums[i] == res[t][0]){
+                               if(nums[j] == res[t][1]){
+                                   flag = true;
+                                   break;
+                               }
+                               --t;
+                            }
+                            if(!flag){
+                                res.push_back({nums[i], nums[j], nums[k]});     
+                            }
+                        }
+                        ++j;
+                        --k; 
+                    }
+                }
+            }
+            else
+                break;
+        }        
+        
+        return res;
+    }
+};
+
+// 优化
+class Solution {
+public:
+    vector<vector<int>> threeSum(vector<int>& nums) {
+        int target;
+        vector<vector<int>> ans;
+        sort(nums.begin(), nums.end());
+        for (int i = 0; i < nums.size(); i++) {
+            if (i > 0 && nums[i] == nums[i - 1]) continue;
+            if ((target = nums[i]) > 0) break;
+            int l = i + 1, r = nums.size() - 1;
+            while (l < r) {
+                if (nums[l] + nums[r] + target < 0) ++l;
+                else if (nums[l] + nums[r] + target > 0) --r;
+                
+                // 优化部分
+                else {
+                    ans.push_back({target, nums[l], nums[r]});
+                    ++l, --r;
+                    while (l < r && nums[l] == nums[l - 1]) ++l;
+                    while (l < r && nums[r] == nums[r + 1]) --r;
+                }
+                
+            }
+        }
+        return ans; 
+    }
+};
