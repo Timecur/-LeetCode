@@ -1,0 +1,58 @@
+class Solution {
+public:
+  
+    int maxProfit(vector<int>& prices) {
+        if(prices.size() < 2) return 0;       
+        int sz = prices.size();
+      
+        vector<vector<vector<int>>> dp(sz+5,vector<vector<int>>(3, vector<int>(2, 0)));
+        /*  
+        int ***dp = new int **[sz+1]; // 天数 交易次数 是否持股
+        
+        for(int i = 0; i < sz+1; ++i){
+            dp[i] = new int *[3];
+        }
+        
+        for(int i = 0; i < sz; ++i){        
+            for(int j = 0; j < 3; ++j){
+                dp[i][j] = new int[2];
+            }        
+        }
+      */
+        
+        
+        for(int i = 0; i < sz; ++i){
+            for(int k = 2; k > 0; --k){
+                if(i == 0) {
+                    dp[i][k][0] = 0;                
+                    dp[i][k][1] = -prices[i];
+                }
+                else{
+                    dp[i][k][0] = max(dp[i-1][k][0], dp[i-1][k][1]+prices[i]);
+                    dp[i][k][1] = max(dp[i-1][k][1], dp[i-1][k-1][0]-prices[i]);
+                }
+            }
+        }
+        
+        return dp[sz-1][2][0];
+    }
+
+
+  /*  
+    int maxProfit(vector<int>& prices) {
+        int dp_i10 = 0, dp_i11 = INT_MIN;
+        int dp_i20 = 0, dp_i21 = INT_MIN;
+        for (auto& price : prices) {
+            dp_i20 = max(dp_i20, dp_i21 + price);
+            dp_i21 = max(dp_i21, dp_i10 - price);
+            dp_i10 = max(dp_i10, dp_i11 + price);
+            dp_i11 = max(dp_i11, -price);
+        }
+        return dp_i20;
+    }
+*/
+
+};
+
+
+
